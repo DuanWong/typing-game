@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr ">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Duan Wang">
+    <meta name="description" content="My web project">
+    <meta name="keyword" content="html, css, web, seo, web development, JS">
+    <title>Shape factory</title>
+    <link rel="icon" href="./assets/img/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/mrspecht/cdn/reset.css" media="all">
+    <link rel="stylesheet" href="./assets/css/style.css" media="all">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap" >
+    <script src="./assets/js/index.js" defer></script>
+  </head>
+  <body class="grid">
+    <main class="container grid">
+       <h1>Shape factory</h1>
+       <section class="flex">
+          <select class="dropdown shape-select" name="shape">
+            <option value="circle">Circle</option>
+            <option value="square">Square</option>
+          </select>
+          <select class="dropdown colour-select" name="colour">
+            <option value="#09f">Blue</option>
+            <option value="#9f0">Green</option>
+            <option value="#f90">Orange</option>
+            <option value="#f09">Pink</option>
+            <option value="#90f">Purple</option>
+          </select>
+          <button class="create">Create</button>
+       </section>
+       <section class="big-box">
+          <div class="storage-one"></div>
+          <div class="storage-two"></div>
+          <div class="storage-three"></div>
+          <div class="storage-four"></div>
+       </section>
+       <section class="info-box">
+          <p class="information"></p>
+       </section>
+    </main>
+  </body>
+</html>
