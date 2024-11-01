@@ -38,7 +38,7 @@ class Shape {
     }
 }
 
-// Create
+// Create shape
 
 const createButton = document.querySelector('.create');
 const storageBoxOne = document.querySelector('.storage-one');
@@ -57,6 +57,15 @@ function createShape() {
     if (shapesArray.length >= 24) {
         infoOfShape.innerText = 'Storage is full!'
         return; 
+    } else {
+        infoOfShape.innerText = '';
+    }
+
+    if (shapeType === '' || colour === '') {
+        infoOfShape.innerText = 'Please choose a shape and a colour!';
+        return;
+    } else {
+        infoOfShape.innerText = '';
     }
 
     const shape = new Shape(colour, shapeType);

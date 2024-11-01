@@ -13,11 +13,6 @@ width: min(100% - 30px, 1200px);
 margin-inline: auto;
 }
 
-.flex {
-    display: flex;
-    align-items: center;
-}
-
 .grid {
     display: grid;
     place-items: center;
@@ -26,6 +21,7 @@ margin-inline: auto;
 /*--------------------------------------------*/
 /*Main                                        */
 /*--------------------------------------------*/
+
 h1 {
     font-size: 40px;
     color:#fff;
@@ -33,30 +29,30 @@ h1 {
 }
 
 .dropdown {
-    margin: 30px 10px;
+    margin: 20px 6px;
     padding: 0 20px;
-    width: 240px;
-    height: 60px;
+    width: 170px;
+    height: 40px;
     border-radius: 10px;
     background-color: #272a30;
     color: #fff;
-    font-size: 20px;
+    font-size: 15px;
     appearance: none;
 }
 
 .create {
-    margin: 30px 10px;
-    width: 120px;
-    height: 60px;
+    margin: 20px 6px;
+    width: 110px;
+    height: 40px;
     border-radius: 10px;
     background-color: #ff7b00;
-    font-size: 20px;
+    font-size: 15px;
     color:#fff;
 }
 
 .big-box {
-    width: 640px;
-    height: 424px;
+    width: 486px;
+    height: 324px;
     background-color: #272a30;
     border-radius: 10px;
     display: flex; 
@@ -69,8 +65,8 @@ h1 {
 }
 
 .shape {
-    width: 90px;
-    height: 90px;
+    width: 65px;
+    height: 65px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -87,14 +83,14 @@ h1 {
 }
 
 .info-box {
-    margin-top:30px;
-    width: 240px;
+    margin-top:10px;
+    width: 500px;
     height: 25px;
     background-color: #18171f;
     text-align: center;
 }
 
 .information {
-    font-size: 20px;
+    font-size: 15px;
     color: #fff;
 }
