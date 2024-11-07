@@ -48,10 +48,11 @@ function validateInputInfo(inputInfo) {
 }
 
 function isAlphabetOnly(str) {
-    const alphabetRegex = /^[A-Za-z]+$/;
+    const alphabetRegex = /^[a-zA-ZÀ-ÿ\s'-]{1,50}$/;
 
     if (!alphabetRegex.test(str)) {
-        errorMessage.innerText = 'Name or city should be composed of letters!'
+        errorMessage.innerText = 
+        'Please enter a name or a city in correct format!'
         return false;
     } else {
         errorMessage.innerText = '';
@@ -63,7 +64,8 @@ function validateEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!emailRegex.test(email)) {
-        errorMessage.innerText = 'Please enter an email in the correct format!'
+        errorMessage.innerText = 
+        'Please enter an email in correct format!'
         return false;
     } else {
         errorMessage.innerText = '';
