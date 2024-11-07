@@ -63,7 +63,7 @@ function validateEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!emailRegex.test(email)) {
-        errorMessage.innerText = 'The email address is wrong!'
+        errorMessage.innerText = 'Please enter an email in the correct format!'
         return false;
     } else {
         errorMessage.innerText = '';
@@ -71,11 +71,11 @@ function validateEmail(email) {
     }
 }
 
-// Create new contacts
+// Edit contacts
 
 const contactsArray = [];
 
-function addContact() {
+function listContact() {
     const input = inputField.value;
     const inputInfo = input.split(',').map(item => item.trim());
 
@@ -89,7 +89,7 @@ function addContact() {
     contactDiv.classList.add('contact-box');
     
     contactsArray.unshift(contact);
-    listContacts(contactDiv, contact);
+    displayContacts(contactDiv, contact);
     contactsContainer.insertBefore(contactDiv, contactsContainer.firstChild);
 
     inputField.value = '';
@@ -100,7 +100,7 @@ function addContact() {
     });
 }
 
-function listContacts(contactDiv, contact) {
+function displayContacts(contactDiv, contact) {
     contactDiv.innerHTML = `
     <p>Name: ${contact.name}</p>
     <p>City: ${contact.city}</p>
@@ -119,7 +119,7 @@ function removeContact(contactDiv, contact) {
         calcContacts();
 }
 
-addButton.addEventListener('click', addContact);
+addButton.addEventListener('click', listContact);
 
 // Calculate contacts
 
