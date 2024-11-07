@@ -2,88 +2,129 @@
 
 // Create a class
 
-const colorNames = {
-    "#09f": "Blue",
-    "#9f0": "Green",
-    "#f90": "Orange",
-    "#f09": "Pink",
-    "#90f": "Purple"
-};
+class Contact {
+    #name;
+    #city;
+    #email;
 
-class Shape {
-    constructor(colour, name) {
-        this._colour = colour;
-        this._name = name;
+    constructor(name, city, email) {
+        this.#name = name;
+        this.#city = city;
+        this.#email = email;
     }
 
     get name() {
-        return this._name;
+        return this.#name;
     }
 
-    set name(value) {
-        this._name = value;
+    get city() {
+        return this.#city;
     }
 
-    get colour() {
-        return this._colour;
-    }
-
-    set colour(value) {
-        this._colour = value;
-    }
-
-    getInfo() {
-        const colorName = colorNames[this._colour]; 
-        return `${colorName} ${this._name}`; 
+    get email() {
+        return this.#email;
     }
 }
 
-// Create shape
+// DOM Elements
 
-const createButton = document.querySelector('.create');
-const storageBoxOne = document.querySelector('.storage-one');
-const storageBoxTwo = document.querySelector('.storage-two');
-const storageBoxThree = document.querySelector('.storage-three');
-const storageBoxFour = document.querySelector('.storage-four');
-const infoOfShape = document.querySelector('.information');
-const shapesArray = [];
+const errorMessage = document.querySelector('.error-message');
+const inputField = document.querySelector('.input');
+const addButton = document.querySelector('.add');
+const contactsContainer = document.querySelector('.contacts-container');
+const contactsCount = document.querySelector('.count');
 
+// Functions for validation
 
-function createShape() {
-    const shapeType = document.querySelector('.shape-select').value;
-    const colour = document.querySelector('.colour-select').value;
-    const colourName = colorNames[colour]; 
-
-    if (shapesArray.length >= 24) {
-        infoOfShape.innerText = 'Storage is full!'
-        return; 
+function validateInputInfo(inputInfo) {
+    if (inputInfo.length < 3) {
+        errorMessage.innerText = 
+        'Please enter the complete information and separate them with commas!'
+        return false; 
     } else {
-        infoOfShape.innerText = '';
+        errorMessage.innerText = '';
+        return true;
     }
+}
 
-    if (shapeType === '' || colour === '') {
-        infoOfShape.innerText = 'Please choose a shape and a colour!';
-        return;
+function isAlphabetOnly(str) {
+    const alphabetRegex = /^[A-Za-z]+$/;
+
+    if (!alphabetRegex.test(str)) {
+        errorMessage.innerText = 'Name or city should be composed of letters!'
+        return false;
     } else {
-        infoOfShape.innerText = '';
+        errorMessage.innerText = '';
+        return true;
     }
+}
 
-    const shape = new Shape(colour, shapeType);
-    shapesArray.push(shape);
+function validateEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    const shapeDiv = document.createElement('div');
-    shapeDiv.classList.add('shape', shapeType);
-    shapeDiv.style.backgroundColor = colour;
+    if (!emailRegex.test(email)) {
+        errorMessage.innerText = 'The email address is wrong!'
+        return false;
+    } else {
+        errorMessage.innerText = '';
+        return true;
+    }
+}
 
-    shapeDiv.addEventListener('click', () => {
-        infoOfShape.innerText = `Unit ${shapesArray.indexOf(shape) + 1}: ${shape.getInfo()}`;
-    });
+// Create new contacts
 
-    if (shapesArray.indexOf(shape) < 6)  return storageBoxOne.appendChild(shapeDiv);
-    if (shapesArray.indexOf(shape) < 12) return storageBoxTwo.appendChild(shapeDiv);
-    if (shapesArray.indexOf(shape) < 18) return storageBoxThree.appendChild(shapeDiv);
+const contactsArray = [];
+
+function addContact() {
+    const input = inputField.value;
+    const inputInfo = input.split(',').map(item => item.trim());
+
+    if (!validateInputInfo(inputInfo)) return;
+    const [contactName, contactCity, contactEmail] = inputInfo;
+    if (!isAlphabetOnly(contactName) || !isAlphabetOnly(contactCity)) return;
+    if (!validateEmail(contactEmail)) return;
+
+    const contact = new Contact(contactName, contactCity, contactEmail);
+    const contactDiv = document.createElement('div');
+    contactDiv.classList.add('contact-box');
     
-    return storageBoxFour.appendChild(shapeDiv);    
+    contactsArray.unshift(contact);
+    listContacts(contactDiv, contact);
+    contactsContainer.insertBefore(contactDiv, contactsContainer.firstChild);
+
+    inputField.value = '';
+    calcContacts();
+
+    contactDiv.addEventListener('click', function() {
+        removeContact(contactDiv, contact);
+    });
 }
 
-createButton.addEventListener('click', createShape);
+function listContacts(contactDiv, contact) {
+    contactDiv.innerHTML = `
+    <p>Name: ${contact.name}</p>
+    <p>City: ${contact.city}</p>
+    <p>Email: ${contact.email}</p>
+`;
+}
+
+function removeContact(contactDiv, contact) {
+    contactsContainer.removeChild(contactDiv); 
+
+        const index = contactsArray.indexOf(contact);
+        if (index > -1) {
+            contactsArray.splice(index, 1);
+        }
+
+        calcContacts();
+}
+
+addButton.addEventListener('click', addContact);
+
+// Calculate contacts
+
+function calcContacts() {
+    contactsCount.innerText = contactsArray.length;
+}
+
+window.addEventListener('load', calcContacts());
