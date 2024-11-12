@@ -79,10 +79,9 @@ h1 {
 }
 
 .contact-box {
-    padding-left: 10px;
+    padding: 10px 20px;
     width: 300px;
     height: 100px;
-    display: flex;
     cursor: pointer;
     margin: 8px;
     background-color: #272a30;
