@@ -116,9 +116,9 @@ body {
     
     .timer {
         font-size: 70px;
-        color:#e80e19;
+        color:#10c97c;
         text-align: center;
-        line-height: 80px;
+        line-height: 45px;
         text-shadow: 0 5px 5px rgba(0, 0, 0, 0.5);
     }
 }

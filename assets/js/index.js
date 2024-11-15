@@ -90,45 +90,88 @@ const hoverSound = new Audio('assets/audio/loaded.mp3');
 const checkSound = new Audio('assets/audio/shot.mp3');
 const resultSound = new Audio('assets/audio/result.mp3');
 const modal = document.querySelector('.modal');
-const scoreHistory = document.querySelector('.score-history');
+const scoreRecord = document.querySelector('.score-record');
 
 /*--------------------------------------------*/
-/*Game                                        */
+/*Timer                                       */
 /*--------------------------------------------*/
 
-function initializeGame() {
-    clearInterval(interval);
-    gameWords = [...wordBank].sort(() => 0.5 - Math.random()).slice(0, 10);
-    currentIndex = 0;
-    hits = 0;
-    timer = 20;
-    hitsDisplay.innerText = '0 HIT(s)';
-    timerDisplay.innerText = '20';
-    inputField.disabled = true;
-    inputField.value = '';
-}
-
-function startGame() {
-    initializeGame();
-    inputField.disabled = false;
-    inputField.style.cursor = 'pointer';
-    inputField.placeholder = 'Enter the word';
-    inputField.classList.add('playing');
-
-    wordDisplay.innerText = gameWords[currentIndex];
-    inputField.focus();
-    bgMusic.play();
-    gameBtn.innerText = 'RESTART'; 
-    interval = setInterval(updateTimer, 1000);
+function flashTimer() {
+    timerDisplay.style.opacity = "1";
+    setTimeout(() => {
+        timerDisplay.style.opacity = "0"; 
+        setTimeout(() => {
+            timerDisplay.style.opacity = "1"; 
+            setTimeout(() => {
+                timerDisplay.style.opacity = "0";
+                setTimeout(() => {
+                    timerDisplay.style.opacity = "1";
+                }, 200);
+            }, 200);
+        }, 200);
+    }, 200);
 }
 
 function updateTimer() {
     if (timer > 0) {
         timer--;
         timerDisplay.innerText = `${timer}`;
+
+        if (timer <= 10) {
+            flashTimer();
+            timerDisplay.style.color = '#e80e19';
+        }
     } else {
+        clearInterval(interval);
+        timerDisplay.style.opacity = "1";
+        timerDisplay.style.color = '#10c97c';
         endGame();
     }
+}
+
+/*--------------------------------------------*/
+/*Shuffle the words                           */
+/*--------------------------------------------*/
+
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+/*--------------------------------------------*/
+/*Play game                                   */
+/*--------------------------------------------*/
+
+function initializeGame() {
+    clearInterval(interval);
+    gameWords = shuffle([...wordBank]);
+
+    currentIndex = 0;
+    hits = 0;
+    timer = 15;
+
+    hitsDisplay.innerText = '0 HIT(s)';
+    timerDisplay.innerText = '15';
+    inputField.disabled = true;
+    inputField.value = '';
+}
+
+function startGame() {
+    initializeGame();
+
+    inputField.disabled = false;
+    inputField.style.cursor = 'pointer';
+    inputField.placeholder = 'Enter the word';
+    inputField.classList.add('playing');
+    wordDisplay.innerText = gameWords[currentIndex];
+    inputField.focus();
+    bgMusic.play();
+    gameBtn.innerText = 'RESTART'; 
+
+    interval = setInterval(updateTimer, 1000);
 }
 
 function checkWord() {
@@ -148,6 +191,7 @@ function checkWord() {
 
 function endGame() {
     clearInterval(interval);
+
     bgMusic.pause();
     bgMusic.currentTime = 0;
     inputField.disabled = true;
@@ -158,7 +202,7 @@ function endGame() {
 
     let percentage = (hits / gameWords.length) * 100;
     const gameScore = new Score(new Date(), hits, percentage.toFixed(1));
-    scores.unshift(gameScore);
+    scores.push(gameScore);
 
     displayScores();
 
@@ -201,7 +245,7 @@ gameBtn.addEventListener('click', () => {
 /*--------------------------------------------*/
 
 function displayScores() {
-    scoreHistory.innerHTML = ''; 
+    scoreRecord.innerHTML = ''; 
 
     const recentScores = scores.slice(-6);
     recentScores.forEach((score, index) => {
@@ -213,12 +257,13 @@ function displayScores() {
         const percentage = score.getPercentage();
 
         scoreElement.innerHTML = `
+            <p>#${index + 1}</p>
             <p>${hits} Hits</p>
             <p>${percentage}%</p>
             <p>${formattedDate}</p>
         `;
 
-        scoreHistory.appendChild(scoreElement);
+        scoreRecord.appendChild(scoreElement);
     });
 }
 
@@ -227,3 +272,4 @@ modal.addEventListener('click', (event) => {
         modal.style.display = 'none';
     }
 });
+
