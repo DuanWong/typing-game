@@ -1,132 +1,229 @@
 'use strict';
 
-// Create a class
+/*--------------------------------------------*/
+/*Create a class                              */
+/*--------------------------------------------*/
 
-class Contact {
-    #name;
-    #city;
-    #email;
+class Score {
+    #date;
+    #hits;
+    #percentage;
 
-    constructor(name, city, email) {
-        this.#name = name;
-        this.#city = city;
-        this.#email = email;
+    constructor(date, hits, percentage) {
+        this.#date = date;
+        this.#hits = hits;
+        this.#percentage = percentage;
     }
 
-    get name() {
-        return this.#name;
+    getDate() {
+        return this.#date;
     }
 
-    get city() {
-        return this.#city;
+    getHits() {
+        return this.#hits;
     }
 
-    get email() {
-        return this.#email;
+    getPercentage() {
+        return this.#percentage;
+    }
+
+    getFormattedDate() {
+        return this.#date.toLocaleDateString("en-US", {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+        });
     }
 }
 
-// DOM Elements
+/*--------------------------------------------*/
+/*Object, Variables, DOM                      */
+/*--------------------------------------------*/
 
-const errorMessage = document.querySelector('.error-message');
+const wordBank = [
+    'dinosaur', 'love', 'pineapple', 'calendar', 'robot', 'building',
+    'population', 'weather', 'bottle', 'history', 'dream', 'character', 'money',
+    'absolute', 'discipline', 'machine', 'accurate', 'connection', 'rainbow',
+    'bicycle', 'eclipse', 'calculator', 'trouble', 'watermelon', 'developer',
+    'philosophy', 'database', 'periodic', 'capitalism', 'abominable', 'phone',
+    'component', 'future', 'pasta', 'microwave', 'jungle', 'wallet', 'canada',
+    'velvet', 'potion', 'treasure', 'beacon', 'labyrinth', 'whisper', 'breeze',
+    'coffee', 'beauty', 'agency', 'chocolate', 'eleven', 'technology',
+    'alphabet', 'knowledge', 'magician', 'professor', 'triangle', 'earthquake',
+    'baseball', 'beyond', 'evolution', 'banana', 'perfume', 'computer',
+    'butterfly', 'discovery', 'ambition', 'music', 'eagle', 'crown',
+    'chess', 'laptop', 'bedroom', 'delivery', 'enemy', 'button', 'door', 'bird',
+    'superman', 'library', 'unboxing', 'bookstore', 'language', 'homework',
+    'beach', 'economy', 'interview', 'awesome', 'challenge', 'science',
+    'mystery', 'famous', 'league', 'memory', 'leather', 'planet', 'software',
+    'update', 'yellow', 'keyboard', 'window', 'beans', 'truck', 'sheep',
+    'blossom', 'secret', 'wonder', 'enchantment', 'destiny', 'quest', 'sanctuary',
+    'download', 'blue', 'actor', 'desk', 'watch', 'giraffe', 'brazil',
+    'audio', 'school', 'detective', 'hero', 'progress', 'winter', 'passion',
+    'rebel', 'amber', 'jacket', 'article', 'paradox', 'social', 'resort',
+    'mask', 'escape', 'promise', 'band', 'level', 'hope', 'moonlight', 'media',
+    'orchestra', 'volcano', 'guitar', 'raindrop', 'inspiration', 'diamond',
+    'illusion', 'firefly', 'ocean', 'cascade', 'journey', 'laughter', 'horizon',
+    'exploration', 'serendipity', 'infinity', 'silhouette', 'wanderlust',
+    'marvel', 'nostalgia', 'serenity', 'reflection', 'twilight', 'harmony',
+    'symphony', 'solitude', 'essence', 'melancholy', 'melody', 'vision',
+    'silence', 'whimsical', 'eternity', 'cathedral', 'embrace', 'poet', 'ricochet',
+    'mountain', 'dance', 'sunrise', 'dragon', 'adventure', 'galaxy', 'echo',
+    'fantasy', 'radiant', 'serene', 'legend', 'starlight', 'light', 'pressure',
+    'bread', 'cake', 'caramel', 'juice', 'mouse', 'charger', 'pillow', 'candle',
+    'film', 'jupiter'
+   ];
+let gameWords = [];
+let scores = [];
+let currentIndex;
+let hits;
+let timer;
+let interval;
+
+const gameBtn = document.querySelector('.game-btn');
+const timerDisplay = document.querySelector('.timer');
+const hitsDisplay = document.querySelector('.hits');
+const wordDisplay = document.querySelector('.word-display');
 const inputField = document.querySelector('.input');
-const addButton = document.querySelector('.add');
-const contactsContainer = document.querySelector('.contacts-container');
-const contactsCount = document.querySelector('.count');
+const bgMusic = document.querySelector('.bg-music');
+const hoverSound = new Audio('assets/audio/loaded.mp3');
+const checkSound = new Audio('assets/audio/shot.mp3');
+const resultSound = new Audio('assets/audio/result.mp3');
+const modal = document.querySelector('.modal');
+const scoreHistory = document.querySelector('.score-history');
 
-// Functions for validation
+/*--------------------------------------------*/
+/*Game                                        */
+/*--------------------------------------------*/
 
-function validateInputInfo(inputInfo) {
-    if (inputInfo.length < 3) {
-        errorMessage.innerText = 
-        'Please enter the complete information and separate them with commas!'
-        return false; 
-    } else {
-        errorMessage.innerText = '';
-        return true;
-    }
-}
-
-function isAlphabetOnly(str) {
-    const alphabetRegex = /^[a-zA-ZÀ-ÿ\s'-]{1,50}$/;
-
-    if (!alphabetRegex.test(str)) {
-        errorMessage.innerText = 
-        'Please enter a name or a city in correct format!'
-        return false;
-    } else {
-        errorMessage.innerText = '';
-        return true;
-    }
-}
-
-function validateEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!emailRegex.test(email)) {
-        errorMessage.innerText = 
-        'Please enter an email in correct format!'
-        return false;
-    } else {
-        errorMessage.innerText = '';
-        return true;
-    }
-}
-
-// Edit contacts
-
-const contactsArray = [];
-
-function listContact() {
-    const input = inputField.value;
-    const inputInfo = input.split(',').map(item => item.trim());
-
-    if (!validateInputInfo(inputInfo)) return;
-    const [contactName, contactCity, contactEmail] = inputInfo;
-    if (!isAlphabetOnly(contactName) || !isAlphabetOnly(contactCity)) return;
-    if (!validateEmail(contactEmail)) return;
-
-    const contact = new Contact(contactName, contactCity, contactEmail);
-    const contactDiv = document.createElement('div');
-    contactDiv.classList.add('contact-box');
-    
-    contactsArray.unshift(contact);
-    displayContacts(contactDiv, contact);
-    contactsContainer.insertBefore(contactDiv, contactsContainer.firstChild);
-
+function initializeGame() {
+    clearInterval(interval);
+    gameWords = [...wordBank].sort(() => 0.5 - Math.random()).slice(0, 10);
+    currentIndex = 0;
+    hits = 0;
+    timer = 20;
+    hitsDisplay.innerText = '0 HIT(s)';
+    timerDisplay.innerText = '20';
+    inputField.disabled = true;
     inputField.value = '';
-    calcContacts();
+}
 
-    contactDiv.addEventListener('click', function() {
-        removeContact(contactDiv, contact);
+function startGame() {
+    initializeGame();
+    inputField.disabled = false;
+    inputField.style.cursor = 'pointer';
+    inputField.placeholder = 'Enter the word';
+    inputField.classList.add('playing');
+
+    wordDisplay.innerText = gameWords[currentIndex];
+    inputField.focus();
+    bgMusic.play();
+    gameBtn.innerText = 'RESTART'; 
+    interval = setInterval(updateTimer, 1000);
+}
+
+function updateTimer() {
+    if (timer > 0) {
+        timer--;
+        timerDisplay.innerText = `${timer}`;
+    } else {
+        endGame();
+    }
+}
+
+function checkWord() {
+    if (inputField.value.trim() === gameWords[currentIndex]) {
+        hits++;
+        hitsDisplay.innerText = `${hits} HIT(s)`;
+        inputField.value = '';
+        checkSound.play();
+        currentIndex++;
+        if (currentIndex < gameWords.length) {
+            wordDisplay.innerText = gameWords[currentIndex];
+        } else {
+            endGame();
+        }
+    }
+}
+
+function endGame() {
+    clearInterval(interval);
+    bgMusic.pause();
+    bgMusic.currentTime = 0;
+    inputField.disabled = true;
+    inputField.value = '';
+    inputField.placeholder = 'Press RESTART to play again!';
+    inputField.classList.remove('playing');
+    inputField.style.cursor = 'not-allowed';
+
+    let percentage = (hits / gameWords.length) * 100;
+    const gameScore = new Score(new Date(), hits, percentage.toFixed(1));
+    scores.unshift(gameScore);
+
+    displayScores();
+
+    modal.style.display = 'flex'; 
+
+    wordDisplay.innerText = 'Game Over!';
+    resultSound.play();
+}
+
+function restartGame() {
+    initializeGame();
+    startGame();
+}
+
+gameBtn.addEventListener('click', () => {
+    if (gameBtn.innerText === 'START') {
+        startGame();
+    } else {
+        restartGame();
+    }
+});
+inputField.addEventListener('input', checkWord);
+
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        endGame();
+    }
+});
+
+/*--------------------------------------------*/
+/*Sound                                       */
+/*--------------------------------------------*/
+
+gameBtn.addEventListener('click', () => {
+    hoverSound.play();
+});
+
+/*--------------------------------------------*/
+/*Modal                                       */
+/*--------------------------------------------*/
+
+function displayScores() {
+    scoreHistory.innerHTML = ''; 
+
+    const recentScores = scores.slice(-6);
+    recentScores.forEach((score, index) => {
+        const scoreElement = document.createElement('div');
+        scoreElement.classList.add('score-item');
+
+        const formattedDate = score.getFormattedDate();
+        const hits = score.getHits();
+        const percentage = score.getPercentage();
+
+        scoreElement.innerHTML = `
+            <p>${hits} Hits</p>
+            <p>${percentage}%</p>
+            <p>${formattedDate}</p>
+        `;
+
+        scoreHistory.appendChild(scoreElement);
     });
 }
 
-function displayContacts(contactDiv, contact) {
-    contactDiv.innerHTML = `
-    <p>Name: ${contact.name}</p>
-    <p>City: ${contact.city}</p>
-    <p>Email: ${contact.email}</p>
-`;
-}
-
-function removeContact(contactDiv, contact) {
-    contactsContainer.removeChild(contactDiv); 
-
-        const index = contactsArray.indexOf(contact);
-        if (index > -1) {
-            contactsArray.splice(index, 1);
-        }
-
-        calcContacts();
-}
-
-addButton.addEventListener('click', listContact);
-
-// Calculate contacts
-
-function calcContacts() {
-    contactsCount.innerText = contactsArray.length;
-}
-
-window.addEventListener('load', calcContacts());
+modal.addEventListener('click', (event) => {
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
+});

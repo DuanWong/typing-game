@@ -6,7 +6,7 @@
     <meta name="author" content="Duan Wang">
     <meta name="description" content="My web project">
     <meta name="keyword" content="html, css, web, seo, web development, JS">
-    <title>My contacts</title>
+    <title>StarTypers</title>
     <link rel="icon" href="./assets/img/favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/mrspecht/cdn/reset.css" media="all">
@@ -16,24 +16,48 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap" >
     <script src="./assets/js/index.js" defer></script>
   </head>
-  <body>
+  <body class="grid">
+    <video class="bg-video" autoplay loop muted>
+      <source src="./assets/vedio/background.mp4" type="video/mp4">
+    </video>
+    <audio class="bg-music" src="./assets/audio/background-music.mp3" loop></audio>
     <main class="container grid">
-       <h1>My contacts</h1>
-       <section class="flex">
-          <input 
-            class="input" 
-            type="text" 
-            placeholder="Name, city, email"
-          >
-          <button class="add">Add</button>
-       </section>
-       <section class="error-box">
-          <p class="error-message"></p>
-       </section>
-       <section class="contacts-container"></section>
-       <button class="total">
-          Total: <span class="count"></span> Contact(s)
-       </button>
+       <section class="game-area">
+          <div class="content grid">
+            <div class="top flex">
+              <h2>StarTypers</h2>
+              <button class="game-btn">START</button>
+            </div>
+            <div class="time">
+              <h1 class="timer"></h1>
+            </div>
+            <div class="screen">
+              <h1 class="word-display">Are you ready?</h1>
+            </div>
+            <div class="hit">
+              <h2><span class="hits"></span></h2>
+            </div>
+            <input 
+                class="input" 
+                type="text" 
+                placeholder="Press START to play!"
+                disabled
+            >
+            <div class="copy-right">
+              <p>&copy; 2024 Duan | All Rights Reserved</p>
+            </div>
+          </div>
+          <video autoplay muted loop playsinline>
+            <source src="./assets/vedio/dashboard.mp4" type="video/mp4">
+          </video>
+        </section>
     </main>
+    <section class="modal">
+      <div class="modal-content">
+        <h2>Score Record</h2>
+        <div class="score-history"></div>
+        <img class="user-image" src="./assets/img/favicon.png">
+      </div>
+    </section>
   </body>
 </html>
