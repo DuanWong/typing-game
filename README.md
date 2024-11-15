@@ -1,13 +1,18 @@
-# My contacts
+# Typing Game
   <p>
-     This is a simple contact directory template. You can add contacts by 
-     entering the contact information in the input box. In addition, 
-     by clicking on a contact, you can delete it. In the lower right corner 
-     of the page, the current total number of contacts is displayed in 
-     real time.
+    This is a typing game called StarTyper. The game scene is set in a 
+    spaceship.
+    Players can click the START button to start the game. After the game 
+    starts, words will be displayed on the screen and the timer will start. 
+    Players need to enter the same words as on the screen in the input box. 
+    After you enter the correct word, the word on the screen will be updated. 
+    Players need to enter as many correct words as possible within the 
+    specified time.
+    Once the timer ends or the player completes all word input, the game ends. 
+    After the game ends, the player's history record will be displayed.
   </p>
   <p>
-    This website developed by Duan.
+    This game developed by Duan.
   </p>
 
 ## The technologies used to build the web app
