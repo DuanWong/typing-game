@@ -152,10 +152,10 @@ function initializeGame() {
 
     currentIndex = 0;
     hits = 0;
-    timer = 15;
+    timer = 60;
 
     hitsDisplay.innerText = '0 HIT(s)';
-    timerDisplay.innerText = '15';
+    timerDisplay.innerText = '60';
     inputField.disabled = true;
     inputField.value = '';
 }
