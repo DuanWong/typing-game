@@ -89,6 +89,7 @@ const bgMusic = document.querySelector('.bg-music');
 const hoverSound = new Audio('assets/audio/loaded.mp3');
 const checkSound = new Audio('assets/audio/shot.mp3');
 const resultSound = new Audio('assets/audio/result.mp3');
+const failSound = new Audio('assets/audio/fail.mp3');
 const modal = document.querySelector('.modal');
 const scoreRecord = document.querySelector('.score-record');
 
@@ -123,8 +124,6 @@ function updateTimer() {
         }
     } else {
         clearInterval(interval);
-        timerDisplay.style.opacity = "1";
-        timerDisplay.style.color = '#10c97c';
         endGame();
     }
 }
@@ -147,7 +146,9 @@ function shuffle(array) {
 
 function initializeGame() {
     clearInterval(interval);
-    gameWords = shuffle([...wordBank]);
+    gameWords = shuffle([wordBank]);
+    bgMusic.currentTime = 0;
+    timerDisplay.style.color = '#10c97c';
 
     currentIndex = 0;
     hits = 0;
@@ -175,7 +176,7 @@ function startGame() {
 }
 
 function checkWord() {
-    if (inputField.value.trim() === gameWords[currentIndex]) {
+    if (inputField.value.trim().toLowerCase() === gameWords[currentIndex].toLowerCase()) {
         hits++;
         hitsDisplay.innerText = `${hits} HIT(s)`;
         inputField.value = '';
@@ -196,20 +197,24 @@ function endGame() {
     bgMusic.currentTime = 0;
     inputField.disabled = true;
     inputField.value = '';
-    inputField.placeholder = 'Press RESTART to play again!';
+    inputField.placeholder = 'Press START to play again!';
     inputField.classList.remove('playing');
     inputField.style.cursor = 'not-allowed';
 
     let percentage = (hits / gameWords.length) * 100;
     const gameScore = new Score(new Date(), hits, percentage.toFixed(1));
-    scores.push(gameScore);
 
-    displayScores();
-
-    modal.style.display = 'flex'; 
+    if (hits > 0) {
+        scores.push(gameScore);
+        displayScores();
+        modal.style.display = 'flex'
+        resultSound.play();
+    } else {
+        failSound.play();
+    }
 
     wordDisplay.innerText = 'Game Over!';
-    resultSound.play();
+    gameBtn.innerText = 'START'; 
 }
 
 function restartGame() {
@@ -227,7 +232,7 @@ gameBtn.addEventListener('click', () => {
 inputField.addEventListener('input', checkWord);
 
 document.addEventListener('keydown', function(event) {
-    if (event.key === 'Escape') {
+    if (event.key === 'Escape' && gameBtn.innerText === 'RESTART') {
         endGame();
     }
 });
@@ -273,3 +278,8 @@ modal.addEventListener('click', (event) => {
     }
 });
 
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape' && modal.style.display === 'flex') {
+        modal.style.display = 'none';
+    }
+});
