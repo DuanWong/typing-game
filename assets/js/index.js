@@ -146,7 +146,7 @@ function shuffle(array) {
 
 function initializeGame() {
     clearInterval(interval);
-    gameWords = shuffle([wordBank]);
+    gameWords = shuffle([...wordBank]);
     bgMusic.currentTime = 0;
     timerDisplay.style.color = '#10c97c';
 
