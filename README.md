@@ -9,7 +9,8 @@
     Players need to enter as many correct words as possible within the 
     specified time.
     Once the timer ends or the player completes all word input, the game ends. 
-    After the game ends, the player's history record will be displayed.
+    After the game ends, the player's score will be displayed. At the same time,
+    the top10 history record will be displayed.
   </p>
   <p>
     This game developed by Duan.
