@@ -1,5 +1,7 @@
 'use strict';
 
+import { listen, select, wordBank } from './data/utility.js';
+
 /*--------------------------------------------*/
 /*Create a class                              */
 /*--------------------------------------------*/
@@ -26,91 +28,48 @@ class Score {
     getPercentage() {
         return this.#percentage;
     }
-
-    getFormattedDate() {
-        return this.#date.toLocaleDateString("en-US", {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric'
-        });
-    }
 }
 
 /*--------------------------------------------*/
 /*Object, Variables, DOM                      */
 /*--------------------------------------------*/
 
-const wordBank = [
-    'dinosaur', 'love', 'pineapple', 'calendar', 'robot', 'building',
-    'population', 'weather', 'bottle', 'history', 'dream', 'character', 'money',
-    'absolute', 'discipline', 'machine', 'accurate', 'connection', 'rainbow',
-    'bicycle', 'eclipse', 'calculator', 'trouble', 'watermelon', 'developer',
-    'philosophy', 'database', 'periodic', 'capitalism', 'abominable', 'phone',
-    'component', 'future', 'pasta', 'microwave', 'jungle', 'wallet', 'canada',
-    'velvet', 'potion', 'treasure', 'beacon', 'labyrinth', 'whisper', 'breeze',
-    'coffee', 'beauty', 'agency', 'chocolate', 'eleven', 'technology',
-    'alphabet', 'knowledge', 'magician', 'professor', 'triangle', 'earthquake',
-    'baseball', 'beyond', 'evolution', 'banana', 'perfume', 'computer',
-    'butterfly', 'discovery', 'ambition', 'music', 'eagle', 'crown',
-    'chess', 'laptop', 'bedroom', 'delivery', 'enemy', 'button', 'door', 'bird',
-    'superman', 'library', 'unboxing', 'bookstore', 'language', 'homework',
-    'beach', 'economy', 'interview', 'awesome', 'challenge', 'science',
-    'mystery', 'famous', 'league', 'memory', 'leather', 'planet', 'software',
-    'update', 'yellow', 'keyboard', 'window', 'beans', 'truck', 'sheep',
-    'blossom', 'secret', 'wonder', 'enchantment', 'destiny', 'quest', 'sanctuary',
-    'download', 'blue', 'actor', 'desk', 'watch', 'giraffe', 'brazil',
-    'audio', 'school', 'detective', 'hero', 'progress', 'winter', 'passion',
-    'rebel', 'amber', 'jacket', 'article', 'paradox', 'social', 'resort',
-    'mask', 'escape', 'promise', 'band', 'level', 'hope', 'moonlight', 'media',
-    'orchestra', 'volcano', 'guitar', 'raindrop', 'inspiration', 'diamond',
-    'illusion', 'firefly', 'ocean', 'cascade', 'journey', 'laughter', 'horizon',
-    'exploration', 'serendipity', 'infinity', 'silhouette', 'wanderlust',
-    'marvel', 'nostalgia', 'serenity', 'reflection', 'twilight', 'harmony',
-    'symphony', 'solitude', 'essence', 'melancholy', 'melody', 'vision',
-    'silence', 'whimsical', 'eternity', 'cathedral', 'embrace', 'poet', 'ricochet',
-    'mountain', 'dance', 'sunrise', 'dragon', 'adventure', 'galaxy', 'echo',
-    'fantasy', 'radiant', 'serene', 'legend', 'starlight', 'light', 'pressure',
-    'bread', 'cake', 'caramel', 'juice', 'mouse', 'charger', 'pillow', 'candle',
-    'film', 'jupiter'
-   ];
 let gameWords = [];
-let scores = [];
 let currentIndex;
 let hits;
 let timer;
 let interval;
 
-const gameBtn = document.querySelector('.game-btn');
-const timerDisplay = document.querySelector('.timer');
-const hitsDisplay = document.querySelector('.hits');
-const wordDisplay = document.querySelector('.word-display');
-const inputField = document.querySelector('.input');
-const bgMusic = document.querySelector('.bg-music');
+const gameBtn = select('.game-btn');
+const timerDisplay = select('.timer');
+const hitsDisplay = select('.hits');
+const wordDisplay = select('.word-display');
+const inputField = select('.input');
+const bgMusic = select('.bg-music');
 const hoverSound = new Audio('assets/audio/loaded.mp3');
 const checkSound = new Audio('assets/audio/shot.mp3');
 const resultSound = new Audio('assets/audio/result.mp3');
 const failSound = new Audio('assets/audio/fail.mp3');
-const modal = document.querySelector('.modal');
-const scoreRecord = document.querySelector('.score-record');
+const modal = select('.modal');
+const scoreRecord = select('.score-record');
+const dialog = select('dialog');
+const highScores = select('.high-scores');
 
 /*--------------------------------------------*/
-/*Timer                                       */
+/*Functions                                   */
 /*--------------------------------------------*/
 
 function flashTimer() {
-    timerDisplay.style.opacity = "1";
-    setTimeout(() => {
-        timerDisplay.style.opacity = "0"; 
+    let flashes = 4; 
+    let interval = 200; 
+
+    for (let i = 0; i < flashes; i++) {
         setTimeout(() => {
-            timerDisplay.style.opacity = "1"; 
-            setTimeout(() => {
-                timerDisplay.style.opacity = "0";
-                setTimeout(() => {
-                    timerDisplay.style.opacity = "1";
-                }, 200);
-            }, 200);
-        }, 200);
-    }, 200);
+            timerDisplay.style.opacity = timerDisplay.style.opacity === "1" ? "0" : "1";
+        }, i * interval); 
+    }
+
+    timerDisplay.style.opacity = 1;
 }
 
 function updateTimer() {
@@ -128,21 +87,9 @@ function updateTimer() {
     }
 }
 
-/*--------------------------------------------*/
-/*Shuffle the words                           */
-/*--------------------------------------------*/
-
 function shuffle(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
+    return [...array].sort(() => Math.random() - 0.5);
 }
-
-/*--------------------------------------------*/
-/*Play game                                   */
-/*--------------------------------------------*/
 
 function initializeGame() {
     clearInterval(interval);
@@ -152,12 +99,13 @@ function initializeGame() {
 
     currentIndex = 0;
     hits = 0;
-    timer = 60;
+    timer = 15;
 
     hitsDisplay.innerText = '0 HIT(s)';
-    timerDisplay.innerText = '60';
+    timerDisplay.innerText = '15';
     inputField.disabled = true;
     inputField.value = '';
+    dialog.close();
 }
 
 function startGame() {
@@ -202,13 +150,22 @@ function endGame() {
     inputField.style.cursor = 'not-allowed';
 
     let percentage = (hits / gameWords.length) * 100;
-    const gameScore = new Score(new Date(), hits, percentage.toFixed(1));
+
+    const formattedDate = new Date().toLocaleDateString("en-US", {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+    });
+
+    const gameScore = new Score(formattedDate, hits, percentage.toFixed(1));
 
     if (hits > 0) {
-        scores.push(gameScore);
-        displayScores();
+        processData(gameScore);
+        displayScores(gameScore);
         modal.style.display = 'flex'
         resultSound.play();
+        displayData();
+        dialog.showModal();
     } else {
         failSound.play();
     }
@@ -222,64 +179,107 @@ function restartGame() {
     startGame();
 }
 
-gameBtn.addEventListener('click', () => {
+function displayScores(gameScore) {
+    scoreRecord.innerHTML = ''; 
+
+    if (gameScore) {
+        const scoreElement = document.createElement('div');
+        scoreElement.classList.add('score-item');
+
+        scoreElement.innerHTML = `
+            <p>${gameScore.getHits()} Hits</p>
+            <p>${gameScore.getPercentage()}%</p>
+        `;
+
+        scoreRecord.appendChild(scoreElement);
+    }
+}
+
+function processData(gameScore) {
+    const existingDataStr = localStorage.getItem('top10');
+    const gameData = existingDataStr ? JSON.parse(existingDataStr) : [];
+
+    gameData.push({
+        date: gameScore.getDate(),
+        hits: gameScore.getHits(),
+        percentage: gameScore.getPercentage()
+    });
+
+    gameData.sort((a, b) => b.hits - a.hits);
+
+    const storageData = gameData.slice(0, 10);
+    const storageDataStr = JSON.stringify(storageData);
+    localStorage.setItem('top10', storageDataStr);
+}
+
+function displayData() {
+    highScores.innerHTML = ''; 
+
+    const displayDataStr = localStorage.getItem('top10');
+    const displayData = displayDataStr ? JSON.parse(displayDataStr) : [];
+
+    if (displayData.length === 0) {
+        highScores.innerHTML = '<p>No games have been played</p>';
+        return;
+    }
+    
+    displayData.forEach((item, index) => {
+        const topElement = document.createElement('div');
+        topElement.classList.add('top-item');
+
+        topElement.innerHTML = 
+          `
+            <p>${(index + 1).toString().padStart(2, '0')}#</p>
+            <p>${item.hits} Hits</p>
+            <p>${item.percentage}%</p>
+            <p>${item.date}</p>
+          `;
+        highScores.appendChild(topElement);
+    });
+}
+
+/*--------------------------------------------*/
+/*EventListener                               */
+/*--------------------------------------------*/
+
+listen(gameBtn, 'click', () => {
     if (gameBtn.innerText === 'START') {
         startGame();
     } else {
         restartGame();
     }
 });
-inputField.addEventListener('input', checkWord);
 
-document.addEventListener('keydown', function(event) {
-    if (event.key === 'Escape' && gameBtn.innerText === 'RESTART') {
-        endGame();
-    }
-});
+listen(inputField, 'input', checkWord);
 
-/*--------------------------------------------*/
-/*Sound                                       */
-/*--------------------------------------------*/
-
-gameBtn.addEventListener('click', () => {
+listen(gameBtn, 'click', () => {
     hoverSound.play();
 });
 
-/*--------------------------------------------*/
-/*Modal                                       */
-/*--------------------------------------------*/
-
-function displayScores() {
-    scoreRecord.innerHTML = ''; 
-
-    const recentScores = scores.slice(-6);
-    recentScores.forEach((score, index) => {
-        const scoreElement = document.createElement('div');
-        scoreElement.classList.add('score-item');
-
-        const formattedDate = score.getFormattedDate();
-        const hits = score.getHits();
-        const percentage = score.getPercentage();
-
-        scoreElement.innerHTML = `
-            <p>#${index + 1}</p>
-            <p>${hits} Hits</p>
-            <p>${percentage}%</p>
-            <p>${formattedDate}</p>
-        `;
-
-        scoreRecord.appendChild(scoreElement);
-    });
-}
-
-modal.addEventListener('click', (event) => {
+listen(modal, 'click', (event) => {
     if (event.target === modal) {
+        modal.style.display = 'none';
+        dialog.close();
+    }
+});
+
+listen(document, 'keydown', function(event) {
+    if (event.key === 'Escape' && modal.style.display === 'flex') {
         modal.style.display = 'none';
     }
 });
 
-document.addEventListener('keydown', function(event) {
-    if (event.key === 'Escape' && modal.style.display === 'flex') {
+listen(dialog, 'click', function(event) {
+    const rect = this.getBoundingClientRect();
+
+    if (event.clientY < rect.top || event.clientY > rect.bottom || 
+        event.clientX < rect.left || event.clientX > rect.right) {
+        dialog.close();
         modal.style.display = 'none';
     }
+});
+
+listen(window, 'load', function() {
+    displayData();
+    dialog.showModal();
 });

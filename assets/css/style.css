@@ -46,13 +46,11 @@ body {
 /*--------------------------------------------*/
 
 .game-area {
-    margin-top: 20px;
     width: 500px;
     height: 380px;
     border-radius: 10px;
     position: relative;
     background: #fff url(../img/bg-modal.jpg) center center / cover no-repeat;
-    
 }
 
 .content {
@@ -180,7 +178,6 @@ body {
     }
 }
 
-
 /*--------------------------------------------*/
 /*Modal                                       */
 /*--------------------------------------------*/
@@ -199,39 +196,93 @@ body {
 }
 
 .modal-content {
-    background: #fff url(../img/bg-modal.jpg) center center / cover no-repeat;;
-    padding: 20px 10px;
-    width: 300px;
-    height: 450px;
+    background: #fff url(../img/bg-modal.jpg) center center / cover no-repeat;
+    width: 500px;
+    height: 380px;
     border-radius: 8px;
-    font-size: 16px;
-    justify-items: center;
+    display: grid;
+    place-items: center;
     position:relative;
 
     h2 {
+        position:absolute;
+        inset: 0 auto auto auto;
         color: #6e171d;
-        font-size: 20px;
-        text-align: center;
+        font-size: 50px;
     }
 
     p {
-        margin-top: 20px;
-        font-size: 16px;
-        color: #000;
+        font-size: 50px;
+        color: #2a3d2d;
+        font-weight: 800;
     }
 
     .user-image {
         position:absolute;
-        inset: auto 120px 20px;
-        width:60px;
-        height:60px;
+        inset: auto auto 20px auto;
+        width:80px;
+        height:80px;
     }
 }
 
+.score-record {
+    position:absolute;
+    inset: 110px auto auto auto;
+}
+
 .score-item {
-    width: 250px;
+    width: 350px;
     height: 50px;
     display:flex;
     justify-content: space-between;
 }
 
+/*--------------------------------------------*/
+/*Dialog                                      */
+/*--------------------------------------------*/
+
+dialog {
+    position: fixed;
+    inset: 0 50px auto auto;
+    z-index: 2;
+    background: #fff url(../img/bg-modal.jpg) center center / cover no-repeat;
+    width: 300px;
+    height: 500px;
+    border-radius: 10px;
+    outline: none;
+    border: none;
+    padding: 20px;
+    animation: 1s linear anim;
+
+    h2 {
+        color: #6e171d;
+        font-size: 30px;
+        text-align: center;
+    }
+
+    p {
+        text-align: center;
+    }
+}
+
+@keyframes anim {
+    from {
+        opacity: 0;
+        translate: 0 -500px;
+    } to {
+        opacity: 1;
+        translate: 0 0;
+    }
+}
+
+.high-scores {
+    margin-top: 15px;
+}
+
+.top-item {
+    font-family: 'monospace';
+    width: 260px;
+    height: 40px;
+    display:flex;
+    justify-content: space-between;
+}

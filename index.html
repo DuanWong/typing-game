@@ -15,7 +15,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap" >
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700&display=swap">
-    <script src="./assets/js/index.js" defer></script>
+    <script type="module" src="./assets/js/index.js"></script>
   </head>
   <body class="grid">
     <video class="bg-video" autoplay loop muted>
@@ -52,10 +52,14 @@
     </main>
     <section class="modal">
       <div class="modal-content">
-        <h2>Score Record</h2>
+        <h2>Your Score</h2>
         <div class="score-record"></div>
         <img class="user-image" src="./assets/img/favicon.png">
       </div>
     </section>
+    <dialog>
+      <h2>TOP 10 SCORES</h2>
+      <div class="high-scores"></div>
+    </dialog>
   </body>
 </html>
