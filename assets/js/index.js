@@ -1,6 +1,6 @@
 'use strict';
 
-import { listen, select, wordBank } from './data/utility.js';
+import { listen, select, wordBank } from './utility.js';
 
 /*--------------------------------------------*/
 /*Create a class                              */
@@ -229,7 +229,7 @@ function displayData() {
 
         topElement.innerHTML = 
           `
-            <p>${(index + 1).toString().padStart(2, '0')}#</p>
+            <p>#${(index + 1).toString().padStart(2, '0')}</p>
             <p>${item.hits} Hits</p>
             <p>${item.percentage}%</p>
             <p>${item.date}</p>

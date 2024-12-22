@@ -280,7 +280,7 @@ dialog {
 }
 
 .top-item {
-    font-family: 'monospace';
+    
     width: 260px;
     height: 40px;
     display:flex;
