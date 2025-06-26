@@ -16,6 +16,11 @@
     This game developed by Duan.
   </p>
 
+## Game Interface
+![Game Interface](./assets/img/game-interface.png)
+
+![Play Game](./assets/img/play-game.png)
+
 ## The technologies used to build the web app
 - <h3>Front-end</h3>
   - HTML (HyperText Markup Language)
