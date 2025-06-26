@@ -99,10 +99,10 @@ function initializeGame() {
 
     currentIndex = 0;
     hits = 0;
-    timer = 15;
+    timer = 30;
 
     hitsDisplay.innerText = '0 HIT(s)';
-    timerDisplay.innerText = '15';
+    timerDisplay.innerText = '30';
     inputField.disabled = true;
     inputField.value = '';
     dialog.close();
