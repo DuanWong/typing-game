@@ -1,25 +1,60 @@
-# Typing Game
-  <p>
-    This is a typing game called StarTyper. The game scene is set in a 
-    spaceship.
-    Players can click the START button to start the game. After the game 
-    starts, words will be displayed on the screen and the timer will start. 
-    Players need to enter the same words as on the screen in the input box. 
-    After you enter the correct word, the word on the screen will be updated. 
-    Players need to enter as many correct words as possible within the 
-    specified time.
-    Once the timer ends or the player completes all word input, the game ends. 
-    After the game ends, the player's score will be displayed. At the same time,
-    the top10 history record will be displayed.
-  </p>
-  <p>
-    This game developed by Duan.
-  </p>
+# StarTyper
+
+**Welcome aboard _StarTyper_ — the ultimate space-themed typing challenge!**
+
+Strap into your seat inside a futuristic spaceship cockpit, where words become your mission targets and **time is your greatest rival**. As the engines hum and stars streak past your view, you're tasked with one job:  
+**Type fast. Type accurately. Conquer the void.**
+
+---
+
+## How to Play
+
+1. Click the **START** button to initiate your mission.
+2. Words will appear on your spaceship's display screen.
+3. The countdown timer will start ticking.
+4. Type each word **exactly as shown** into the input field.
+5. When a word is entered correctly, it will be replaced with a new one.
+6. Continue typing as many correct words as possible **within the time limit**.
+
+---
+
+## Goal
+
+Type quickly and accurately to **maximize your score** before time runs out.  
+The game ends when the timer reaches zero or when all words are completed.
+
+---
+
+## After the Game
+
+- Your **score** will be displayed.
+- A leaderboard will show the **Top 10 all-time scores**.
+
+Can you become the fastest pilot in the StarTyper fleet?
+
+---
+
+## Features
+
+- Immersive **spaceship-themed interface**
+- Fast-paced **typing gameplay**
+- Real-time **timer-based challenge**
+- Focus on **accuracy and speed**
+- Automatic **Top 10 history tracking**
+
+---
+
+Get ready to type among the stars.  
+**Let the mission begin!**
+
+---
 
 ## Game Interface
 ![Game Interface](./assets/img/game-interface.png)
 
 ![Play Game](./assets/img/play-game.png)
+
+---
 
 ## The technologies used to build the web app
 - <h3>Front-end</h3>
