@@ -28,7 +28,9 @@
 
 body {
     background: #171921;
-    font-family: 'Exo 2', sans-serif;
+    font-family: "Jersey 25", sans-serif;
+    font-weight: 400;
+    font-style: normal;
 }
 
 .bg-video {
@@ -54,14 +56,11 @@ body {
 }
 
 .content {
-    position: relative;
     font-size: 24px;
 }
 
 .top {
-    position: absolute;
-    inset: 0 0 auto 0;
-    width: 500px;
+    width: 100%;
     height: 70px;
     display: flex;
     justify-content: space-between;
@@ -69,7 +68,7 @@ body {
 
     h2 {
         padding-left: 25px;
-        font-size: 20px;
+        font-size: 30px;
         color:#6e171d;
     }
     
@@ -79,7 +78,7 @@ body {
         height: 40px;
         border-radius: 10px;
         background-color: #10c97c;
-        font-size: 15px;
+        font-size: 18px;
         color:#6e171d;
         font-weight: 600;
     }
@@ -91,9 +90,7 @@ body {
 }
 
 .time {
-    position: absolute;
-    inset: 70px 0 auto 0;
-    width: 500px;
+    width: 100%;
     height: 80px;
     align-items: center;
     justify-content: center;
@@ -108,16 +105,14 @@ body {
 }
 
 .screen {
-    position: absolute;
-    inset: 150px 25px auto;
-    width: 450px;
+    width: calc(100% - 50px);
     height: 80px;
     border-radius: 10px;
     background-color: #2a3d2d;
     cursor: not-allowed;
 
     h1 {
-        font-size: 50px;
+        font-size: 55px;
         line-height: 80px;
         text-align: center;
         color: #fff;
@@ -125,13 +120,11 @@ body {
 }
 
 .hit {
-    position: absolute;
-    inset: 230px 0 auto 0;
-    width: 500px;
+    width: 100%;
     height: 50px;
 
     h2 {
-        font-size: 15px;
+        font-size: 20px;
         line-height: 50px;
         text-align: center;
         color:#6e171d;
@@ -139,14 +132,12 @@ body {
 }
 
 .input {
-    position: absolute;
-    inset: 280px 25px auto;
-    width: 450px;
+    width: calc(100% - 50px);
     height: 50px;
     border-radius: 10px;
     background-color: #fff;
     border: 2px solid #fff;
-    font-size: 15px;
+    font-size: 20px;
     color:#000;
     text-align: center;
     cursor: not-allowed;
@@ -165,9 +156,7 @@ body {
 }
 
 .copy-right {
-    position: absolute;
-    inset: 330px 0 0;
-    width: 500px;
+    width: 100%;
     height: 50px;
     font-size: 15px;
 
@@ -285,4 +274,22 @@ dialog {
     height: 40px;
     display:flex;
     justify-content: space-between;
+}
+
+/*--------------------------------------------*/
+/*Media screen                                */
+/*--------------------------------------------*/
+
+@media screen and (max-width: 768px) {
+    .game-area {
+        width: 350px;
+    }
+
+    .screen h1 {
+        font-size: 30px;
+    }
+
+    .modal {
+        display: none;
+    }
 }

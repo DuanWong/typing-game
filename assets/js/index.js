@@ -165,7 +165,11 @@ function endGame() {
         modal.style.display = 'flex'
         resultSound.play();
         displayData();
-        dialog.showModal();
+
+        if (window.innerWidth > 768) {
+            dialog.showModal();;
+        }
+        
     } else {
         failSound.play();
     }
@@ -280,6 +284,10 @@ listen(dialog, 'click', function(event) {
 });
 
 listen(window, 'load', function() {
+    if (window.innerWidth <= 768) {
+        return;
+    }
+
     displayData();
     dialog.showModal();
 });
