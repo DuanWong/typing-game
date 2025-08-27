@@ -47,6 +47,17 @@ body {
 /*Main                                        */
 /*--------------------------------------------*/
 
+.fa-radio {
+    cursor: pointer;
+    font-size: 30px;
+    color:#4a504a;
+    transition: transform ease 0.5s;
+}
+
+.fa-radio:hover{
+    transform:scale(1.05);
+}
+
 .game-area {
     width: 500px;
     height: 380px;
